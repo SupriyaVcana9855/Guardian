@@ -79,6 +79,15 @@
                           </p>
                       </a>
                   </li>
+
+                  <li class="nav-item">
+                      <a href="{{ route('service-draft.index') }}" class="nav-link {{request()->is('service-draft*') ? 'active' : ''}}">
+                          <i class="nav-icon far fa-user" style="color:white"></i>
+                          <p style="color:white">
+                              Services Draft
+                          </p>
+                      </a>
+                  </li>
                  
               </ul>
           </nav>

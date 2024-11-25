@@ -12,6 +12,7 @@ use App\Http\Controllers\Backend\HomeController as BackendHomeController;
 use App\Http\Controllers\Backend\ServiceController;
 use App\Http\Controllers\Backend\UsefullLinkController;
 use App\Http\Controllers\Backend\PageDesignController;
+use App\Http\Controllers\Backend\ServiceDraftController;
 use Illuminate\Support\Facades\Artisan;
 
 Route::get('/welcome', function () {
@@ -44,6 +45,12 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('news', NewsController::class);
     Route::resource('link', UsefullLinkController::class);
     Route::resource('page', PageDesignController::class);
+
+
+    Route::get('service-draft-index', [ServiceDraftController::class,'index'])->name('service-draft.index');
+    Route::get('edit/{id?}', [ServiceDraftController::class,'edit'])->name('service-draft.edit');
+    Route::post('service-draft-save', [ServiceDraftController::class,'store'])->name('service-draft.store');
+
 
     Route::post('/website-style', [PageDesignController::class, 'store'])->name('website-style');
 });
