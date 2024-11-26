@@ -25,7 +25,7 @@
                       <a href="{{route('header.index')}}" class="nav-link {{request()->is('header*') ? 'active' : ''}}">
                           <i class="nav-icon far fa-plus-square" style="color:white"></i>
                           <p style="color:white">
-                              Hero Section
+                             Header
                           </p>
                       </a>
                   </li>
@@ -33,7 +33,7 @@
                       <a href="{{route('home.index')}}" class="nav-link {{request()->is('home*') ? 'active' : ''}}">
                           <i class="nav-icon fa fa-home" style="color:white"></i>
                           <p style="color:white">
-                              Home
+                              Hero Section
                           </p>
                       </a>
                   </li>
@@ -71,11 +71,20 @@
                       </a>
                   </li>
 
+                    <li class="nav-item">
+                      <a href="{{route('footer.index')}}" class="nav-link {{request()->is('footer*') ? 'active' : ''}}">
+                          <i class="nav-icon fa fa-link" style="color:white"></i>
+                          <p style="color:white">
+                              Footer
+                          </p>
+                      </a>
+                  </li>
+
                   <li class="nav-item">
                       <a href="{{route('page.index')}}" class="nav-link {{request()->is('page*') ? 'active' : ''}}">
                           <i class="nav-icon fa fa-cog" style="color:white"></i>
                           <p style="color:white">
-                              Page Design 
+                          Design Styles 
                           </p>
                       </a>
                   </li>

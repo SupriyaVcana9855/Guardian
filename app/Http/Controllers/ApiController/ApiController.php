@@ -19,6 +19,8 @@ use App\Models\Service;
 use App\Models\UsefulLink;
 use Illuminate\Http\Request;
 use Str;
+use App\Models\Contact;
+
 
 class ApiController extends Controller
 {
@@ -92,14 +94,31 @@ class ApiController extends Controller
         ], 200);
     }
 
-    public function fetchWebsiteStyle()
-    {
-        $pageDesign = PageDesign::all();
-        
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Data fetched successfully',
-            'data' => WebsiteStyleResource::collection($pageDesign),
-        ], 200);
-    }
+
+public function fetchWebsiteStyle()
+{
+    $pageDesign = PageDesign::all();
+    return response()->json([
+        'status' => 'success',
+        'message' => 'CSS styles fetched successfully',
+        'data' => WebsiteStyleResource::collection($pageDesign),
+    ], 200);
+}
+
+
+public function addContacts(Request $request)
+{
+    $pageDesign = new Contact();
+    $pageDesign->email = $request->pageDesign;
+    $pageDesign->name = $request->name;
+    $pageDesign->subject = $request->subject;
+    $pageDesign->message = $request->message;
+    $pageDesign->save();
+    return response()->json([
+        'status' => 'success',
+        'message' => 'Contact saved successfully',
+        'data' => $pageDesign,
+    ], 200);
+}
+
 }
