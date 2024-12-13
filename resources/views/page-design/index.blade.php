@@ -7,8 +7,9 @@
         <div class="card">
 
             <div class="card-header">
-                <h3 class="card-title">Home</h3>
-                <button class="btn btn-primary"><a style="color:white" href="{{ route('home.create') }}">+ Home</a></button>
+                <h3 class="card-title">Styles</h3>
+                <button class="btn btn-primary">        <a style="color: white;" href="{{ route('page.create') }}">+ Style</a>
+</button>
             </div>
             <!-- /.card-header -->
             <div class="card-body">
@@ -16,27 +17,27 @@
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>Title</th>
-                            <th>Subtitle</th>
-                            <th>Button Content</th>
-                            <th>Button Link</th>
+                            <th>Page</th>
+                            <th>Font Size</th>
+                            <th>Font Weight</th>
+                            <th>Font Allignment</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($homeData as $key => $home)
+                        @foreach ($pageData as $key => $page)
                         <tr>
                             <td>{{ $key + 1 }}</td>
-                            <td>{{ $home->title }}</td>
-                            <td>{{ $home->subtitle }}</td>
-                            <td>{{ $home->button_content }}</td>
-                            <td>{{ $home->button_link }}</td>
+                            <td>{{ ucfirst($page->category) }}</td>
+                            <td>{{ $page->font_size }}</td>
+                            <td>{{ $page->font_weight }}</td>
+                            <td>{{ $page->text_alignment }}</td>
                             <td>
-                                <a href="{{ route('home.edit',$home->id) }}"><i class="fa fa-edit"></i></a>
-                                <form id="delete-form-{{ $home->id }}" action="{{ route('home.destroy', $home->id) }}" method="POST" style="display:inline;">
+                                <a href="{{ route('page.edit',$page->id) }}"><i class="fa fa-edit"></i></a>
+                                <form id="delete-form-{{ $page->id }}" action="{{ route('page.destroy', $page->id) }}" method="POST" style="display:inline;">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="button" class="btn btn-link p-0 delete-button" data-id="{{ $home->id }}">
+                                    <button type="button" class="btn btn-link p-0 delete-button" data-id="{{ $page->id }}">
                                         <i class="fa fa-trash text-danger"></i>
                                     </button>
                                 </form>

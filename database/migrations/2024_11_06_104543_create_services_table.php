@@ -23,6 +23,11 @@ return new class extends Migration
             $table->string('image')->nullable();
             $table->string('background_image')->nullable();
             $table->string('background_color')->nullable();
+            $table->string('status')->nullable();
+            $table->string('type')->nullable();
+
+            $table->string('show_on_home_page')->nullable();
+
             $table->json('pointers')->nullable();
 
             $table->timestamps();

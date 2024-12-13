@@ -1,11 +1,10 @@
 <?php
 
 namespace App\Http\Resources;
-
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class WebsiteStyleResource extends JsonResource
+class BannerResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -14,13 +13,16 @@ class WebsiteStyleResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+       
         return [
             'id' => $this->id,
-            'category' => $this->category,
-            'font_size' => $this->font_size,
-            'font_weight' =>$this->font_weight,
-            'text_alignment' =>$this->text_alignment,
-            'content_color' => $this->content_color,
+            'heading' => $this->heading,
+            'type' => $this->type,
+            'description' => $this->description,
+            'button_text' => $this->button_text,
+            'button_link' => $this->button_link,
+            'image' => $this->image,
+            
             
         ];
     }

@@ -14,15 +14,17 @@ return new class extends Migration
         Schema::create('about_us', function (Blueprint $table) {
             $table->id();
             $table->string('title')->nullable();
-            // $table->string('subtitle')->nullable();
+            $table->string('subtitle')->nullable();
             $table->text('description_1')->nullable();
             $table->text('description_2')->nullable();
             $table->string('button_content')->nullable();
             $table->string('button_link')->nullable();
             $table->string('image')->nullable();
-            $table->string('background_image')->nullable();
-            $table->string('background_color')->nullable();
-            // $table->json('pointers')->nullable();
+            $table->string('type')->nullable();
+            $table->string('content_alignment')->nullable();
+            $table->string('status')->nullable();
+            $table->string('content_background_image')->nullable();
+            $table->string('content_background_color')->nullable();
             $table->timestamps();
         });
     }

@@ -15,6 +15,8 @@ class AuthController extends Controller
         if (!User::where('email', $request->email)->exists()) {
             return redirect()->back()->with('error', 'This email does not exist in our records.');
         }        
+        dd($request);
+
         $credentials = $request->only('email', 'password');
         if (Auth::attempt($credentials)) {
             return redirect('/');

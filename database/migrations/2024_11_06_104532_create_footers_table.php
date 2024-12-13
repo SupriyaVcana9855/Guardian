@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('link')->nullable();
             $table->string('background_color')->nullable();
             $table->string('background_image')->nullable();
+            $table->string('type')->nullable();
 
             $table->timestamps();
         });

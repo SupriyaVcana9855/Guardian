@@ -26,29 +26,33 @@
                         <div class="card-header" style="background-color:#0476b4">
                             <h3 class="card-title">Add Footer</h3>
                         </div>
-                        <form action="{{ route('footer.store') }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ @isset($footer->id)?route('footer.updae',$footer->id):route('footer.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
+                                @if ($footer->id)
+                                  @method('PUT');
+                                @endif
+                                
                             <div class="card-body">
                                 <div class="form-group">
                                     <label for="title">Title</label>
-                                    <input type="text" class="form-control" name="title" id="title" placeholder="Enter title">
+                                    <input type="text" class="form-control" name="title" id="title" placeholder="Enter title" value="{{ old('title',$footer->title) }}">
                                 </div>
                                 <div class="form-group">
                                     <label for="link">Address</label>
-                                    <input type="text" class="form-control" name="address" id="address" placeholder="Enter Address">
+                                    <input type="text" class="form-control" name="address" id="address" placeholder="Enter Address" value="{{ old('address',$footer->address)  }}">
                                 </div>
                                 <div class="form-group">
                                     <label for="email">Fooetr Description</label>
-                                    <textarea class="form-control" name="description" id="description" placeholder="Enter Text" ></textarea>
+                                    <textarea class="form-control" name="description" id="description" placeholder="Enter Text" >{{ old($footer->description)  }}</textarea>
                                 </div>
                                 <div class="form-group">
                                     <label for="phone_no">Contact Info</label>
-                                    <input type="phone" class="form-control" name="phone_no" id="phone_no">
+                                    <input type="phone" class="form-control" name="phone_no" id="phone_no" value="{{ old('phone_no',$footer->phone_no)  }}">
                                 </div>
 
                                  <div class="form-group">
                                     <label for="phone_no">Email</label>
-                                    <input type="email" class="form-control" name="email" id="email">
+                                    <input type="email" class="form-control" name="email" id="email" value="{{ old('email',$footer->email)  }}">
                                 </div>
 
                               <div class="row">

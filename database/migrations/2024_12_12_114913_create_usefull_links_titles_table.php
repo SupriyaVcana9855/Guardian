@@ -11,14 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('page_designs', function (Blueprint $table) {
+        Schema::create('usefull_links_titles', function (Blueprint $table) {
             $table->id();
-            $table->text('category')->nullable();
-            $table->text('font_size')->nullable();
-            $table->text('font_weight')->nullable();
-            $table->text('content_color')->nullable();
-            $table->string('text_alignment')->nullable();
-           
+            $table->string('title')->nullable();
+            $table->string('type')->nullable();
             $table->timestamps();
         });
     }
@@ -28,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('page_designs');
+        Schema::dropIfExists('usefull_links_titles');
     }
 };

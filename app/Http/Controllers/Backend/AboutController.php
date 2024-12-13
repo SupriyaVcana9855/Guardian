@@ -7,6 +7,7 @@ use App\Http\Requests\AboutRequest;
 use App\Models\AboutUs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use App\Models\BackgroundImage;
 
 class AboutController extends Controller
 {
@@ -24,41 +25,44 @@ class AboutController extends Controller
      */
     public function create()
     {
-        return view('about.form');
+        $about = new AboutUs;
+        return view('about.form', compact('about'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(AboutRequest $request)
+    public function store(Request $request)
     {
         try {
             $about = new AboutUs();
             $about->title = $request->title;
+            $about->subtitle = $request->subtitle;
             $about->description_1 = $request->description_1;
             $about->description_2 = $request->description_2;
             $about->button_content = $request->button_content;
             $about->button_link = $request->button_link;
-            $about->background_color = $request->background_color;
-    
-    
-            if ($request->hasFile('background_image')) {
-                $backgroundImageName = time() . '_' . $request->file('background_image')->getClientOriginalName();
-                $backgroundImagePath = $request->file('background_image')->storeAs('about', $backgroundImageName, 'public');
-                $about->background_image = 'storage/app/public/' . $backgroundImagePath;
-            }
-    
+            $about->content_alignment = $request->content_alignment;
+            $about->status = $request->status;
+            $about->content_background_color = $request->background_color;
+
             if ($request->hasFile('image')) {
                 $imageName = time() . '_' . $request->file('image')->getClientOriginalName();
                 $imagePath = $request->file('image')->storeAs('about', $imageName, 'public');
                 $about->image = 'storage/app/public/' . $imagePath;
             }
-    
-    
+            if ($request->hasFile('background_image')) {
+                $backgroundImageName = time() . '_' . $request->file('background_image')->getClientOriginalName();
+                $backgroundImagePath = $request->file('background_image')->storeAs('about', $backgroundImageName, 'public');
+                $about->background_image = 'storage/app/public/' . $backgroundImagePath;
+            }
+            // dd($about);
             $about->save();
-    
+
+                 
             return redirect()->route('about.index')->with('success', 'Record created successfully!');
         } catch (\Exception $e) {
+            dd($e->getMessage());
             return redirect()->back()->with('error', 'Failed to create record: ' . $e->getMessage());
         }
     }
@@ -78,55 +82,39 @@ class AboutController extends Controller
     public function edit(string $id)
     {
         $about = AboutUs::find($id);
-        return view('about.editform', compact('about'));
+        return view('about.form', compact('about'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(AboutRequest $request, string $id)
+    public function update(Request $request)
     {
         try {
-    
-            $about = AboutUs::findOrFail($id);
-    
-            if ($request->hasFile('background_image')) {
-                // Delete the old background image if it exists
-                if ($about->background_image && \Storage::exists(str_replace('storage/', '', $about->background_image))) {
-                    \Storage::delete(str_replace('storage/', '', $about->background_image));
-                }
-    
-                // Store the new background image with the original file name
-                $backgroundImageName = time() . '_' . $request->file('background_image')->getClientOriginalName();
-                $backgroundImagePath = $request->file('background_image')->storeAs('about', $backgroundImageName, 'public');
-                $about->background_image ='storage/app/public/' . $backgroundImagePath;
-            }
-    
-            if ($request->hasFile('image')) {
-                // Delete the old image if it exists
-                if ($about->image && \Storage::exists(str_replace('storage/', '', $about->image))) {
-                    \Storage::delete(str_replace('storage/', '', $about->image));
-                }
-    
-                // Store the new image with the original file name
+            $about = AboutUs::findOrFail($request->hidden_id);
+             if ($request->hasFile('image')) {
                 $imageName = time() . '_' . $request->file('image')->getClientOriginalName();
                 $imagePath = $request->file('image')->storeAs('about', $imageName, 'public');
                 $about->image = 'storage/app/public/' . $imagePath;
             }
-    
             $about->title = $request->title;
+            $about->subtitle = $request->subtitle;
             $about->description_1 = $request->description_1;
             $about->description_2 = $request->description_2;
             $about->button_content = $request->button_content;
             $about->button_link = $request->button_link;
-            $about->background_color = $request->background_color;
-    
-            $about->save();
-    
+            $about->content_alignment = $request->content_alignment;
+            $about->status = $request->status;
+            $about->content_background_color = $request->background_color;
 
+            if ($request->hasFile('background_image')) {
+                $backgroundImageName = time() . '_' . $request->file('background_image')->getClientOriginalName();
+                $backgroundImagePath = $request->file('background_image')->storeAs('about', $backgroundImageName, 'public');
+                $about->background_image = 'storage/app/public/' . $backgroundImagePath;
+            }
+            $about->save();
             return redirect()->route('about.index')->with('success', 'Record updated successfully!');
         } catch (\Exception $e) {
-
             return redirect()->back()->with('error', 'Failed to update record. Please try again.');
         }
     }
