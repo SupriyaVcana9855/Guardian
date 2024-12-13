@@ -38,8 +38,8 @@
     <div class="col-md-12">
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">About Us</h3>
-                <button class="btn btn-primary"><a style="color:white" href="{{ route('about.create') }}">+ ADD</a></button>
+                <h3 class="card-title">Page content</h3>
+                <button class="btn btn-primary"><a style="color:white" href="{{ route('content.create') }}">+ ADD</a></button>
             </div>
             <!-- /.card-header -->
             <div class="card-body">
@@ -54,29 +54,29 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($about as $key => $abouts)
+                        @foreach ($content as $key => $contents)
                         <tr>
                             <td>{{ $key + 1 }}</td>
-                            <td>{{ $abouts->button_content }}</td>
-                            <td>{{ substr($abouts->description_1,0,25) }}
+                            <td>{{ $contents->button_content }}</td>
+                            <td>{{ substr($contents->description_1,0,25) }}
                             <span class="tooltip-container" onclick="toggleTooltip(event, this)"  style="color:white">
                                     Read more...
-                            <span class="tooltip-content"><p>{{ $abouts->description_1 }}</p></span>
+                            <span class="tooltip-content"><p>{{ $contents->description_1 }}</p></span>
                                 </span>
                             </td>
-                            <td>{{ substr($abouts->description_2, 0 ,25) }}
+                            <td>{{ substr($contents->description_2, 0 ,25) }}
                             <span class="tooltip-container" onclick="toggleTooltip(event, this)" style="color:white">
                                     Read more...
-                            <span class="tooltip-content"><p>{{ $abouts->description_2 }}</p></span>
+                            <span class="tooltip-content"><p>{{ $contents->description_2 }}</p></span>
                                 </span>
                             </td>
                             <td>
-                                <a href="{{ route('about.edit',$abouts->id) }}"><i class="fa fa-edit"  style="color:white"></i></a>
+                                <a href="{{ route('content.edit',$contents->id) }}"><i class="fa fa-edit"  style="color:white"></i></a>
                          
-                                <form id="delete-form-{{ $abouts->id }}" action="{{ route('about.destroy', $abouts->id) }}" method="POST" style="display:inline;">
+                                <form id="delete-form-{{ $contents->id }}" action="{{ route('content.destroy', $contents->id) }}" method="POST" style="display:inline;">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="button" class="btn btn-link p-0 delete-button" data-id="{{ $abouts->id }}">
+                                    <button type="button" class="btn btn-link p-0 delete-button" data-id="{{ $contents->id }}">
                                         <i class="fa fa-trash" style="color:white"></i>
                                     </button>
                                 </form>

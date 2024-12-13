@@ -6,6 +6,7 @@ use App\Http\Controllers\Backend\NewsController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Backend\AuthController;
+use App\Http\Controllers\Backend\BackgroundController;
 use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\HeaderController;
 use App\Http\Controllers\Backend\HomeController as BackendHomeController;
@@ -13,6 +14,10 @@ use App\Http\Controllers\Backend\ServiceController;
 use App\Http\Controllers\Backend\UsefullLinkController;
 use App\Http\Controllers\Backend\PageDesignController;
 use App\Http\Controllers\Backend\FooterController;
+use App\Http\Controllers\Backend\PageContentController;
+use App\Http\Controllers\Backend\BannerController;
+
+
 
 use Illuminate\Support\Facades\Artisan;
 
@@ -47,9 +52,18 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('link', UsefullLinkController::class);
     Route::resource('page', PageDesignController::class);
     Route::resource('footer', FooterController::class);
+    Route::resource('content', PageContentController::class);
 
+    Route::resource('banner', BannerController::class);
 
-    Route::post('/website-style', [PageDesignController::class, 'store'])->name('website-style');
+    Route::post('/saveDesign', [PageDesignController::class, 'saveDesign'])->name('saveDesign');
+
+    Route::get('/background/{param}', [BackgroundController::class, 'background'])->name('background');
+    Route::post('/savebackground', [BackgroundController::class, 'savebackground'])->name('savebackground');
+   
+
+    
+    Route::post('/website-style', [PageDesignController::class, 'homeBackground'])->name('website-style');
 });
 
 
@@ -72,7 +86,7 @@ Route::get('/header-seeder', function () {
 // Database Migration Route
 Route::get('/migrate', function () {
     try {
-        Artisan::call('migrate');
+        Artisan::call('migrate:fresh');
         return response()->json([
             'status' => 'success',
             'message' => 'Database migrations executed successfully.',

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\ApiController;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\AboutResource;
+use App\Http\Resources\BannerResource;
 use App\Http\Resources\HeaderResource;
 use App\Http\Resources\HomeResource;
 use App\Http\Resources\NewsResource;
@@ -11,6 +12,7 @@ use App\Http\Resources\ServicesResource;
 use App\Http\Resources\UsefullLinlsResource;
 use App\Http\Resources\WebsiteStyleResource;
 use App\Models\AboutUs;
+use App\Models\BannerSection;
 use App\Models\Header;
 use App\Models\Home;
 use App\Models\News;
@@ -27,7 +29,6 @@ class ApiController extends Controller
     public function fetchHeaderData()
     {
         $headerData = Header::with('children')->whereNull('parent_id')->get();
-        
         return response()->json([
             'status' => 'success',
             'message' => 'Data fetched successfully',
@@ -46,11 +47,21 @@ class ApiController extends Controller
     }
     public function fetchAboutData()
     {
-        $aboutData = AboutUs::latest()->first();
+        $aboutData = AboutUs::all();
         return response()->json([
             'status' => 'success',
             'message' => 'Data fetched successfully',
             'data' => AboutResource::collection($aboutData),
+        ], 200);
+    }
+
+    public function banenrs()
+    {
+        $banners = BannerSection::all();
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Data fetched successfully',
+            'data' => BannerResource::collection($banners),
         ], 200);
     }
     public function fetchServicesData()
@@ -109,11 +120,15 @@ public function fetchWebsiteStyle()
 public function addContacts(Request $request)
 {
     $pageDesign = new Contact();
+
     $pageDesign->email = $request->pageDesign;
     $pageDesign->name = $request->name;
     $pageDesign->subject = $request->subject;
     $pageDesign->message = $request->message;
     $pageDesign->save();
+
+
+    
     return response()->json([
         'status' => 'success',
         'message' => 'Contact saved successfully',

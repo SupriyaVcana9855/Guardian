@@ -28,11 +28,14 @@ class ServiceController extends Controller
      */
     public function create()
     {
+        $service = new Service();
         $headerChild = Header::with('children')->whereNull('parent_id')->where('category','Services')->get();
+        $links = Header::where('link','!=','')->get();
+
         $headerChild = HeaderResource::collection($headerChild);
       
         // dd($headerChild[0]['children'][0]['category']);
-        return view('Service.form',compact('headerChild'));
+        return view('Service.form',compact('headerChild','service','links'));
 
     }
 
@@ -42,7 +45,6 @@ class ServiceController extends Controller
     public function store(ServiceRequest $request)
     {
         $ServiceData = new Service;
-        // Save or update the category
         $ServiceData->title = $request->title;
         $ServiceData->description_1 = $request->description_1;
         $ServiceData->subtitle = $request->subtitle;
@@ -51,11 +53,22 @@ class ServiceController extends Controller
         $ServiceData->pointers =json_encode($request->pointers);
         $ServiceData->button_content = $request->button_content;
         $ServiceData->button_link = $request->button_link;
-        $ServiceData->background_color = $request->background_color;
-        if ($request->hasFile('background_image')) {
-            $backgroundImageName = time() . '_' . $request->file('background_image')->getClientOriginalName();
-            $backgroundImagePath = $request->file('background_image')->storeAs('service', $backgroundImageName, 'public');
-            $ServiceData->background_image = 'storage/app/public/' . $backgroundImagePath;
+        $ServiceData->show_on_home_page = $request->show_on_home_page;
+        $ServiceData->status = $request->status;
+        $ServiceData->type = $request->type;
+
+        if($request->type == 'image')
+        {
+            $ServiceData->background_color = '';
+
+            if ($request->hasFile('background_image')) {
+                $backgroundImageName = time() . '_' . $request->file('background_image')->getClientOriginalName();
+                $backgroundImagePath = $request->file('background_image')->storeAs('service', $backgroundImageName, 'public');
+                $ServiceData->background_image = 'storage/app/public/' . $backgroundImagePath;
+            }
+        }else{
+            $ServiceData->background_color = $request->background_color;
+            $ServiceData->background_image = '';
         }
 
         if ($request->hasFile('image')) {
@@ -81,43 +94,28 @@ class ServiceController extends Controller
      */
     public function edit(string $id)
     {
-        $services = Service::find($id);
-        return view('Service.editform',compact('services'));
+        $service = Service::find($id);
+        $headerChild = Header::with('children')->whereNull('parent_id')->where('category','Services')->get();
+        $links = Header::where('link','!=','')->get();
+
+        $headerChild = HeaderResource::collection($headerChild);
+      
+        // dd($headerChild[0]['children'][0]['category']);
+        return view('Service.form',compact('headerChild','service','links'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(ServiceRequest $request, string $id)
+    public function update(ServiceRequest $request)
     {
         try {
-    
-            $ServiceData = Service::findOrFail($id);
-    
-            if ($request->hasFile('background_image')) {
-                // Delete the old background image if it exists
-                if ($ServiceData->background_image && \Storage::exists(str_replace('storage/', '', $ServiceData->background_image))) {
-                    \Storage::delete(str_replace('storage/', '', $ServiceData->background_image));
-                }
-    
-                // Store the new background image with the original file name
-                $backgroundImageName = time() . '_' . $request->file('background_image')->getClientOriginalName();
-                $backgroundImagePath = $request->file('background_image')->storeAs('service', $backgroundImageName, 'public');
-                $ServiceData->background_image ='storage/app/public/' . $backgroundImagePath;
-            }
-    
+            $ServiceData = Service::findOrFail($request->hidden_id);
             if ($request->hasFile('image')) {
-                // Delete the old image if it exists
-                if ($ServiceData->image && \Storage::exists(str_replace('storage/', '', $ServiceData->image))) {
-                    \Storage::delete(str_replace('storage/', '', $ServiceData->image));
-                }
-    
-                // Store the new image with the original file name
                 $imageName = time() . '_' . $request->file('image')->getClientOriginalName();
                 $imagePath = $request->file('image')->storeAs('service', $imageName, 'public');
                 $ServiceData->image = 'storage/app/public/' . $imagePath;
             }
-    
             $ServiceData->title = $request->title;
             $ServiceData->subtitle = $request->subtitle;
             $ServiceData->service_type = $request->service_type;
@@ -125,11 +123,24 @@ class ServiceController extends Controller
             $ServiceData->description_2 = $request->description_2;
             $ServiceData->button_content = $request->button_content;
             $ServiceData->button_link = $request->button_link;
-            $ServiceData->background_color = $request->background_color;
             $ServiceData->pointers =json_encode($request->pointers);
-    
+            $ServiceData->show_on_home_page = $request->show_on_home_page;
+            $ServiceData->status = $request->status;
+            $ServiceData->type = $request->type;
+
+            if($request->type == 'image')
+             {
+                $ServiceData->background_color = '';
+                if ($request->hasFile('background_image')) {
+                    $backgroundImageName = time() . '_' . $request->file('background_image')->getClientOriginalName();
+                    $backgroundImagePath = $request->file('background_image')->storeAs('service', $backgroundImageName, 'public');
+                    $ServiceData->background_image = 'storage/app/public/' . $backgroundImagePath;
+                }
+            }else{
+                $ServiceData->background_color = $request->background_color;
+                $ServiceData->background_image = '';
+            }
             $ServiceData->save();
-    
 
             return redirect()->route('service.index')->with('success', 'Record updated successfully!');
         } catch (\Exception $e) {

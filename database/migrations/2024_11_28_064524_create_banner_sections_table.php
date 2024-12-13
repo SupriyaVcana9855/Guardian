@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('homes', function (Blueprint $table) {
+        Schema::create('banner_sections', function (Blueprint $table) {
             $table->id();
-            $table->string('title')->nullable();
-            $table->string('subtitle')->nullable();
-            $table->string('description')->nullable();
-            $table->string('button_content')->nullable();
+            $table->string('heading')->nullable();
+            $table->string('type')->nullable();
+            $table->text('description')->nullable();
+            $table->string('button_text')->nullable();
             $table->string('button_link')->nullable();
             $table->string('image')->nullable();
             $table->timestamps();
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('homes');
+        Schema::dropIfExists('banner_sections');
     }
 };

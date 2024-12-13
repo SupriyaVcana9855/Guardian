@@ -6,12 +6,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Add Home Section</h1>
+                    <h1>Home Page</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{route('home.index')}}">Home</a></li>
-                        <li class="breadcrumb-item active">Add Form</li>
+                        <li class="breadcrumb-item"><a href="{{ route('home.index') }}">Home</a></li>
+                        <li class="breadcrumb-item active">{{ isset($home->id) ? 'Edit Form' : 'Add Form' }}</li>
                     </ol>
                 </div>
             </div>
@@ -24,81 +24,100 @@
                 <div class="col-md-12">
                     <div class="card card-primary">
                         <div class="card-header" style="background-color:#0476b4">
-                            <h3 class="card-title">Add Home Details</h3>
+                            <h3 class="card-title">Hero Section</h3>
                         </div>
-                        <form action="{{ route('home.store') }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ isset($home->id) ? route('home.update', $home->id) : route('home.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
+                            @if(isset($home->id))
+                                @method('PUT')
+                            @endif
+                           <input type="hidden" value="{{ $home->id ?? '' }}" name="hidden_id">
+                          
                             <div class="card-body">
-                                <div class="form-group">
-                                    <label for="title">Title</label>
-                                    <input type="text" class="form-control" name="title" id="title" placeholder="Enter title" value="{{ old('title') }}">
-                                    @error('title')
-                                    <div class="text-danger">{{ $message }}</div>
-                                    @enderror
+                                <!-- Title and Subtitle -->
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="title">Title</label>
+                                            <input class="form-control" name="title" id="title" placeholder="Enter Title" value="{{ old('title', $home->title ?? '') }}">
+                                            @error('title')
+                                            <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="subtitle">Sub Title</label>
+                                            <input class="form-control" name="subtitle" id="subtitle" placeholder="Enter SubTitle" value="{{ old('subtitle', $home->subtitle ?? '') }}">
+                                            @error('subtitle')
+                                            <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
                                 </div>
 
-                                <div class="form-group">
-                                    <label for="subtitle">Subtitle</label>
-                                    <input type="text" class="form-control" name="subtitle" id="subtitle" placeholder="Enter subtitle" value="{{ old('subtitle') }}">
-                                    @error('subtitle')
-                                    <div class="text-danger">{{ $message }}</div>
-                                    @enderror
+                                <!-- Descriptions -->
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="description">Description</label>
+                                            <textarea class="form-control" name="description" id="description" placeholder="Enter description">{{ old('description', $home->description ?? '') }}</textarea>
+                                            @error('description')
+                                            <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                  
                                 </div>
 
-                                <div class="form-group">
-                                    <label for="description_1">Description</label>
-                                    <textarea class="form-control" name="description_1" id="description_1">{{ old('description_1') }}</textarea>
-                                    @error('description_1')
-                                    <div class="text-danger">{{ $message }}</div>
-                                    @enderror
+                                <!-- Button Content and Link -->
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="button_content">Button Text</label>
+                                            <input type="text" class="form-control" name="button_content" id="button_content" placeholder="Enter Button Text" value="{{ old('button_content', $home->button_content ?? '') }}">
+                                            @error('button_content')
+                                            <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="button_link">Button Link</label>
+                                            <input type="text" class="form-control" name="button_link" id="button_link" placeholder="Enter Button Link" value="{{ old('button_link', $home->button_link ?? '') }}">
+                                            @error('button_link')
+                                            <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
                                 </div>
 
-                                <div class="form-group">
-                                    <label for="button_content">Button Text</label>
-                                    <input type="text" class="form-control" name="button_content" id="button_content" placeholder="Enter Button Text" value="{{ old('button_content') }}">
-                                    @error('button_content')
-                                    <div class="text-danger">{{ $message }}</div>
-                                    @enderror
-                                </div>
+                              
 
-                                <div class="form-group">
-                                    <label for="button_link">Button Link</label>
-                                    <input type="text" class="form-control" name="button_link" id="button_link" placeholder="Enter Button Link" value="{{ old('button_link') }}">
-                                    @error('button_link')
-                                    <div class="text-danger">{{ $message }}</div>
-                                    @enderror
+                                <!-- Image and Alignment -->
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="image">Image</label>
+                                            @if(isset($home->image))
+                                                <img id="image_preview" src="{{ asset(str_replace('storage/app/public', 'storage', $home->image)) }}" alt="Image Preview" style="width: 130px;" />
+                                            @else
+                                                <img id="image_preview" src="#" alt="Image Preview" style="width: 130px; display: none;" />
+                                            @endif
+                                            <input type="file" class="form-control" name="image" id="image_input" accept="image/*">
+                                            @error('image')
+                                            <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                 
                                 </div>
-
-                                <div class="form-group">
-                                    <label for="background_color">Background Color</label>
-                                    <input type="color" class="form-control" name="background_color" id="background_color" value="{{ old('background_color') }}">
-                                    @error('background_color')
-                                    <div class="text-danger">{{ $message }}</div>
-                                    @enderror
-                                </div>
-
-                                <div class="form-group">
-                                <label for="image">Image</label>
-                                <img id="blah" src="#" alt="Image Preview" style="width: 130px; display:none" />
-                                <input type="file" class="form-control" name="image" id="imgInp" accept="image/*">
-                                @error('image')
-                                <div class="text-danger">{{ $message }}</div>
-                                @enderror
+                                <!-- Status -->
                             </div>
 
-                            <div class="form-group">
-                                <label for="background_image">Background Center Image</label>
-                                <img id="bg_image" src="#" alt="Background Image Preview" style="width: 130px; display:none" />
-                                <input type="file" class="form-control" name="background_image" id="background_image" accept="image/*">
-                                @error('background_image')
-                                <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            </div>
-
+                            <!-- Submit Button -->
                             <div class="card-footer">
-                                <button type="submit" class="btn btn-primary">Submit</button>
+                                <button type="submit" class="btn btn-primary">{{ isset($home->id) ? 'Update' : 'Submit' }}</button>
                             </div>
                         </form>
                     </div>
@@ -108,28 +127,29 @@
     </section>
 </div>
 
+<script src="https://cdn.ckeditor.com/4.20.2/standard/ckeditor.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script>
-     imgInp.onchange = evt => {
-        const [file] = imgInp.files;
-        if (file) {
-            blah.src = URL.createObjectURL(file);
-            blah.style.display = "block"; // Show the image
-        } else {
-            blah.style.display = "none"; // Hide the image if no file is selected
-            blah.src = "#"; // Reset the src
-        }
-    };
+    // CKEditor Initialization
+    CKEDITOR.replace('description');
+    CKEDITOR.replace('description_2');
 
-    background_image.onchange = evt => {
-        const [file] = background_image.files;
+    // Image Preview
+    $('#background_image').on('change', function (evt) {
+        const [file] = evt.target.files;
+        const preview = $('#background_preview');
         if (file) {
-            bg_image.src = URL.createObjectURL(file);
-            bg_image.style.display = "block"; // Show the image
-        } else {
-            bg_image.style.display = "none"; // Hide the image if no file is selected
-            bg_image.src = "#"; // Reset the src
+            preview.attr('src', URL.createObjectURL(file)).show();
         }
-    };
+    });
+
+    $('#image_input').on('change', function (evt) {
+        const [file] = evt.target.files;
+        const preview = $('#image_preview');
+        if (file) {
+            preview.attr('src', URL.createObjectURL(file)).show();
+        }
+    });
 </script>
 
 @endsection

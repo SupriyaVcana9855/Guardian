@@ -2,6 +2,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Guardian</title>
+<meta name="csrf-token" content="{{ csrf_token() }}">
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -41,5 +42,11 @@ button.btn.btn-primary {
 button.btn.btn-primary {
     float: inline-end!important;
     
+}
+
+.cke_notification_warning {
+    background: #c83939;
+    border: 1px solid #902b2b;
+    display: none !important;
 }
 </style>

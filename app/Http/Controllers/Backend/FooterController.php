@@ -64,7 +64,9 @@ class FooterController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $footer =  Footer::find($id);
+        $headers = Header::all();
+        return view('Footer.form',compact('footer','headers'));
     }
 
     /**
